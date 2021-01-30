@@ -3,7 +3,6 @@ namespace SpriteKind {
 }
 function levelStart () {
     info.setScore(0)
-    info.changeLifeBy(1)
     for (let index = 0; index < enemy_directions_list.length; index++) {
         enemy_directions_list.pop()
     }
@@ -14,81 +13,25 @@ function levelStart () {
     projectile.destroy()
     if (level == 0) {
         // Это карта уровня
-        tiles.setTilemap(tiles.createTilemap(hex`0a0008000000000000000605000000030000000000000000000105000000030000000001000000020101010000040000000000000400000000030000030000000006010100000400000000000000000000000000`, img`
-            . . . . . . 2 2 . . 
-            . 2 . . . . . . . . 
-            . 2 2 . . . 2 . . . 
-            . 2 . . . . 2 2 2 . 
-            . 2 . . . . . . 2 . 
-            . . . 2 . . 2 . . . 
-            . 2 2 2 . . 2 . . . 
-            . . . . . . . . . . 
-            `, [myTiles.tile0,myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5], TileScale.Sixteen))
-        tiles.placeOnTile(mySprite, tiles.getTileLocation(5, 3))
+        tiles.setTilemap(tilemap`level1`)
     } else if (level == 1) {
         // Это карта уровня
-        tiles.setTilemap(tiles.createTilemap(hex`0a0008000003000000000000000000010500010101010500000000000100000000000006010101000101050000000000000201000000000605000601010105000000000000040000000000030000000000000300`, img`
-            . 2 . . . . . . . . 
-            . 2 2 . 2 2 2 2 2 . 
-            . . . . 2 . . . . . 
-            . 2 2 2 2 . 2 2 2 . 
-            . . . . . . 2 . . . 
-            . 2 2 . 2 2 2 2 2 . 
-            . . . . . 2 . . . . 
-            . 2 . . . . . . 2 . 
-            `, [myTiles.tile0,myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5], TileScale.Sixteen))
-        tiles.placeOnTile(mySprite, tiles.getTileLocation(5, 4))
+        tiles.setTilemap(tilemap`level2`)
     } else if (level == 2) {
         // Это карта уровня
-        tiles.setTilemap(tiles.createTilemap(hex`0a0008000300030003000300060104000400040004000004000000000000000000000105000300030003000301000000000000000001040004000400040006010002000000000000000006010500030003000605`, img`
-            2 . 2 . 2 . 2 . 2 2 
-            2 . 2 . 2 . 2 . . 2 
-            . . . . . . . . . . 
-            2 2 . 2 . 2 . 2 . 2 
-            2 . . . . . . . . 2 
-            2 . 2 . 2 . 2 . 2 2 
-            . . . . . . . . . . 
-            2 2 2 . 2 . 2 . 2 2 
-            `, [myTiles.tile0,myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5], TileScale.Sixteen))
-        tiles.placeOnTile(mySprite, tiles.getTileLocation(1, 6))
+        tiles.setTilemap(tilemap`level3`)
     } else if (level == 3) {
         // Это карта уровня
-        tiles.setTilemap(tiles.createTilemap(hex`0a00100000000000000000030006000101010105000100000001000000000001000000040000030000010003000000000100000400010605000001000000000100000000010006010101030003000400000001000100010000000000010001000100020003000400040004000300010000000000000001000101010106010101010004000000000000000000000003000006010101000601010000000000040000000000`, img`
-            . . . . . . . 2 . 2 
-            . 2 2 2 2 2 . 2 . . 
-            . 2 . . . . . 2 . . 
-            . 2 . . 2 . . 2 . 2 
-            . . . . 2 . . 2 . 2 
-            2 2 . . 2 . . . . 2 
-            . . . . 2 . 2 2 2 2 
-            2 . 2 . 2 . . . 2 . 
-            2 . 2 . . . . . 2 . 
-            2 . 2 . . . 2 . 2 . 
-            2 . 2 . 2 . 2 . . . 
-            . . . . 2 . 2 2 2 2 
-            2 2 2 2 2 . 2 . . . 
-            . . . . . . . . 2 . 
-            . 2 2 2 2 . 2 2 2 . 
-            . . . . 2 . . . . . 
-            `, [myTiles.tile0,myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5], TileScale.Sixteen))
-        tiles.placeOnTile(mySprite, tiles.getTileLocation(4, 9))
-        spawn_time = 3000
-    } else if (level == 4) {
-    	
-    } else if (level == 5) {
-    	
-    } else if (level == 6) {
-    	
-    } else if (level == 6) {
-    	
+        tiles.setTilemap(tilemap`level4`)
     } else {
         game.over(true, effects.confetti)
     }
+    tiles.placeOnRandomTile(mySprite, assets.tile`tile1`)
     level += 1
 }
 sprites.onCreated(SpriteKind.Enemy, function (sprite) {
     sprite.startEffect(effects.ashes, 200)
-    tiles.placeOnRandomTile(sprite, myTiles.tile0)
+    tiles.placeOnRandomTile(sprite, assets.tile`tile0`)
     pick_direction(sprite)
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -114,24 +57,23 @@ function pick_direction (mySprite: Sprite) {
     if (Math.percentChance(50)) {
         if (Math.percentChance(50)) {
             mySprite.setImage(img`
-                . . . . b c c . . . . 
-                . . . . b c c . . . . 
-                b b b . b c c . b b b 
-                1 1 1 . b c c . 1 1 1 
-                b b b c b c c c b b b 
-                1 1 1 c c c c c 1 1 1 
-                b b b e e e e e b b b 
-                1 1 1 e b 3 3 e 1 1 1 
-                b b b e b 3 3 e b b b 
-                1 1 1 e b b b e 1 1 1 
-                b b b e e e e e b b b 
-                1 1 1 c c c c c 1 1 1 
-                b b b . c c c . b b b 
-                1 1 1 . . . . . 1 1 1 
                 b b b . . . . . b b b 
+                1 1 1 . . . . . 1 1 1 
+                b b b . c c c . b b b 
+                1 1 1 c c c c c 1 1 1 
+                b b b e e e e e b b b 
+                1 1 1 e b b b e 1 1 1 
+                b b b e b 3 3 e b b b 
+                1 1 1 e b 3 3 e 1 1 1 
+                b b b e e e e e b b b 
+                1 1 1 c c c c c 1 1 1 
+                b b b c b c c c b b b 
+                1 1 1 . b c c . 1 1 1 
+                b b b . b c c . b b b 
+                . . . . b c c . . . . 
+                . . . . b c c . . . . 
                 `)
             mySprite.setVelocity(0, randint(10, 30))
-            mySprite.image.flipY()
             enemy_directions_list[enemy_sprite_list.indexOf(mySprite)] = 100
         } else {
             mySprite.setImage(img`
@@ -173,19 +115,18 @@ function pick_direction (mySprite: Sprite) {
             enemy_directions_list[enemy_sprite_list.indexOf(mySprite)] = 200
         } else {
             mySprite.setImage(img`
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
-                . . . c e e e e e c . . . . . 
-                . . c c e b b b e c b b b b b 
-                . . c c e b 3 3 e c c c c c c 
-                . . c c e b 3 3 e c c c c c c 
-                . . . c e e e e e c . . . . . 
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
-                b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
+                . . . . . c e e e e e c . . . 
+                b b b b b c e b b b e c c . . 
+                c c c c c c e 3 3 b e c c . . 
+                c c c c c c e 3 3 b e c c . . 
+                . . . . . c e e e e e c . . . 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
+                . . b 1 b 1 b 1 b 1 b 1 b 1 b 
                 `)
-            mySprite.image.flipX()
             mySprite.setVelocity(randint(-30, -10), 0)
             enemy_directions_list[enemy_sprite_list.indexOf(mySprite)] = -200
         }
@@ -291,15 +232,25 @@ let enemy_projectile: Sprite = null
 let projectile: Sprite = null
 let mySprite: Sprite = null
 let direction = 0
-let spawn_time = 0
 let enemy_directions_list: number[] = []
 let enemy_sprite_list: Sprite[] = []
 let level = 0
 info.setLife(10)
 level = 0
-enemy_sprite_list = sprites.allOfKind(SpriteKind.Enemy)
-enemy_directions_list = []
-spawn_time = 5500
+enemy_sprite_list = [sprites.create(img`
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    . . . c e e e e e c . . . . . 
+    . . c c e b b b e c b b b b b 
+    . . c c e b 3 3 e c c c c c c 
+    . . c c e b 3 3 e c c c c c c 
+    . . . c e e e e e c . . . . . 
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    b 1 b 1 b 1 b 1 b 1 b 1 b . . 
+    `, SpriteKind.Enemy)]
+enemy_directions_list = [200]
 let enemy_count = 3
 direction = -100
 mySprite = sprites.create(img`
@@ -319,44 +270,24 @@ mySprite = sprites.create(img`
     `, SpriteKind.Player)
 scene.cameraFollowSprite(mySprite)
 projectile = sprites.createProjectileFromSide(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    5 5 5 5 
     `, 50, 100)
 enemy_projectile = sprites.createProjectileFromSide(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    5 
+    5 
+    5 
+    5 
     `, 50, 100)
 levelStart()
-game.onUpdateInterval(spawn_time, function () {
-    if (enemy_sprite_list.length <= enemy_count) {
+forever(function () {
+    if (info.score() >= 10) {
+        game.setDialogTextColor(6)
+        game.showLongText("NEXT LEVEL", DialogLayout.Center)
+        levelStart()
+    }
+})
+game.onUpdateInterval(500, function () {
+    if (enemy_sprite_list.length <= enemy_count && Math.percentChance(30)) {
         enemy_directions_list.push(200)
         enemy_sprite_list.push(sprites.create(img`
             b 1 b 1 b 1 b 1 b 1 b 1 b . . 
@@ -372,15 +303,6 @@ game.onUpdateInterval(spawn_time, function () {
             b 1 b 1 b 1 b 1 b 1 b 1 b . . 
             `, SpriteKind.Enemy))
     }
-})
-forever(function () {
-    if (info.score() >= 10) {
-        game.setDialogTextColor(6)
-        game.showLongText("NEXT LEVEL", DialogLayout.Center)
-        levelStart()
-    }
-})
-game.onUpdateInterval(500, function () {
     for (let value of enemy_sprite_list) {
         if (Math.percentChance(30)) {
             if (Math.abs(enemy_directions_list[enemy_sprite_list.indexOf(value)]) == 100) {
